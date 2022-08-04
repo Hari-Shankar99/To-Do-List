@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Tasks List</title>
+  </head>
+  <body>
+    <div class="banner">
+      <br />
+      <h1 font="arial">Tasks Window</h1>
+      <br />
+      <div class="flex_form">
+        <label for="task_name"
+          >Task Name:
+          <input
+            type="text"
+            id="task_name"
+            class="input"
+            name="task_name"
+            size="30"
+            font="1.5rem"
+        /></label>
+
+        <label for="assignee"
+          >Assignee:
+          <input
+            type="text"
+            id="assignee"
+            class="input"
+            name="assignee"
+            size="15"
+        /></label>
+
+        <label for="due_date"
+          >Due Date:
+          <input type="date" id="due_date" class="input" name="due_date"
+        /></label>
+      </div>
+      <br /><br /><br />
+    </div>
+    <br />
+    <button job="submit">Add Task</button>
+    <h2>In progress</h2>
+    <div>
+      <table id="table_inProgress">
+        <tr>
+          <th>Task Details</th>
+          <th>Assignee</th>
+          <th>Due Date</th>
+          <th>Action</th>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h2>Completed</h2>
+      <table id="table_Completed">
+        <tr>
+          <th>Task Details</th>
+          <th>Assignee</th>
+          <th>Due Date</th>
+          <th>Status</th>
+        </tr>
+      </table>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>
