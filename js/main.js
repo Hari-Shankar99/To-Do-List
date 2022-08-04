@@ -51,17 +51,6 @@ function loadtask(id) {
 //    assignee:assigneeList,
 //   dueDate:string
 // }
-function getTaskObj(formData) {
-    var newTask = {
-        taskId: tasks.length,
-        taskName: formData.taskName,
-        assignee: formData.assignee,
-        dueDate: new Date(formData.dueDate),
-        taskStatus: taskStatus.COMPLETED
-    };
-    return newTask;
-}
-;
 var unHideError;
 (function (unHideError) {
     unHideError[unHideError["taskNameError"] = 0] = "taskNameError";
@@ -98,6 +87,17 @@ function validateTask(newTask) {
     Hide(unHideError.dueDateError);
     return true;
 }
+function getTaskObj(formData) {
+    var newTask = {
+        taskId: tasks.length,
+        taskName: formData.taskName,
+        assignee: formData.assignee,
+        dueDate: new Date(formData.dueDate),
+        taskStatus: taskStatus.COMPLETED
+    };
+    return newTask;
+}
+;
 // sends the tasks for submission if it is valid
 function submitTask() {
     var formData = new FormData(document.getElementById('form'));
@@ -118,14 +118,14 @@ document.addEventListener("keyup", function (event) {
 });
 //click monitoring
 taskTable.addEventListener("click", function (event) {
-    var _a, _b, _c;
+    var _a;
     var element = event.target; // return the clicked element inside list
-    //to avoid meaningless clicks
-    var elementJob = (_b = (_a = element === null || element === void 0 ? void 0 : element.attributes) === null || _a === void 0 ? void 0 : _a.job) === null || _b === void 0 ? void 0 : _b.value;
+    var attributesList = element === null || element === void 0 ? void 0 : element.attributes;
+    var elementJob = attributesList.job.value;
     //submit button is clicked
     if (elementJob === "toggle") {
-        //task is checked/unchecked
-        var id = (_c = element === null || element === void 0 ? void 0 : element.parentNode) === null || _c === void 0 ? void 0 : _c.parentNode.id;
+        var row = (_a = element === null || element === void 0 ? void 0 : element.parentNode) === null || _a === void 0 ? void 0 : _a.parentNode;
+        var id = +row.id;
         toggleTask(id);
     }
 });
