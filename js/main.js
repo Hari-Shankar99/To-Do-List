@@ -1,4 +1,3 @@
-var assignees = ["none", "Hari", "Shibo", "Sarthak", "Prabjoth", "John Doe"];
 var taskStatus;
 (function (taskStatus) {
     taskStatus[taskStatus["INPROGRESS"] = 0] = "INPROGRESS";
@@ -10,7 +9,7 @@ var listCompleted = document.getElementById("tableCompleted");
 var form = document.getElementById("form");
 var button = document.getElementById("button");
 var taskTable = document.getElementById("taskTable");
-var options = { weekday: 'short', month: 'short', day: 'numeric' };
+var dateOptions = { weekday: "short", month: "short", day: "numeric" };
 /* delete tasks with task id */
 function deleteTask(id) {
     var row = document.getElementById("".concat(id));
@@ -28,10 +27,11 @@ function toggleTask(id) {
     loadtask(id); //adding to other list
 }
 function loadtask(id) {
-    //checking if it belongs to done or not done
+    //creating rows
     var row = document.createElement("tr");
-    row.setAttribute('id', "".concat(id));
+    row.setAttribute("id", "".concat(id));
     var colArray = [];
+    //creating 4 columns
     for (var i = 0; i < 4; i++) {
         colArray[i] = document.createElement("td");
     }
@@ -40,30 +40,28 @@ function loadtask(id) {
     colArray[3].setAttribute("align", "center");
     colArray[0].innerHTML = tasks[id].taskName;
     colArray[1].innerHTML = tasks[id].assignee;
-    colArray[2].innerHTML = tasks[id].dueDate.toLocaleDateString("en-US", options);
+    colArray[2].innerHTML = tasks[id].dueDate.toLocaleDateString("en-US", dateOptions);
     var checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("job", "toggle");
     checkbox.setAttribute("id", "checkbox".concat(id));
     var target;
+    //checking if it belongs to inProgress or Completed
     if (tasks[id].taskStatus === taskStatus.INPROGRESS) {
         checkbox.setAttribute("checked", "");
-        target = document.getElementById('tableCompleted');
+        target = document.getElementById("tableCompleted");
     }
     else {
-        target = document.getElementById('tableInProgress');
+        target = document.getElementById("tableInProgress");
     }
     colArray[3].appendChild(checkbox);
     colArray.map(function (item) {
         row.appendChild(item);
     });
+    //adding row
     target.appendChild(row);
 }
-// interface formDataType{
-//   taskName:string,
-//    assignee:assigneeList,
-//   dueDate:string
-// }
+//error when not a valid task form data
 var errorType;
 (function (errorType) {
     errorType["taskNameError"] = "taskNameError";
@@ -71,6 +69,7 @@ var errorType;
     errorType["invalidDueDateError"] = "invalidDueDate";
     errorType["noDueDateError"] = "noDueDate";
 })(errorType || (errorType = {}));
+//ADDING ERROR MESSAGE WHEN SOMETHING IS WRONG
 function addErrorMsg(error) {
     var element;
     switch (error) {
@@ -93,8 +92,8 @@ function addErrorMsg(error) {
     }
 }
 function removeErrorMsg() {
-    document.getElementById("taskNameError").innerHTML = '';
-    document.getElementById("assigneeError").innerHTML = '';
+    document.getElementById("taskNameError").innerHTML = "";
+    document.getElementById("assigneeError").innerHTML = "";
     document.getElementById("dueDateError").innerHTML = "";
 }
 function validateTask(newTask) {
@@ -119,11 +118,13 @@ function validateTask(newTask) {
         validity = false;
     }
     else if (isNaN(+newTask.dueDate)) {
+        //no date
         addErrorMsg(errorType.noDueDateError);
         validity = false;
     }
     return validity;
 }
+//convert form data to task object
 function getTaskObj(formData) {
     var newTask = {
         taskId: tasks.length,
@@ -143,10 +144,10 @@ function submitTask() {
     if (validateTask(newTask)) {
         tasks.push(newTask);
         loadtask(newTask.taskId); //load the new task
+        //reset the input fields  
+        var form_1 = document.getElementById("form");
+        form_1.reset();
     }
-    //reset the input fields
-    var form = document.getElementById("form");
-    form.reset();
 }
 // return key to submit task
 document.addEventListener("keyup", function (event) {
@@ -155,7 +156,7 @@ document.addEventListener("keyup", function (event) {
     }
 });
 function getJobValue(element) {
-    // return the clicked element inside list
+    // return the job value of the clicked element
     var attributesList = element.attributes;
     return attributesList.job.value;
 }

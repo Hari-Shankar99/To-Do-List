@@ -15,28 +15,28 @@
       <form id="form" class="flex_form">
         <div class="flexSingleInput">
           <div>
-          <label for="taskName">Task Name: </label>
-          <input
-            type="text"
-            id="taskName"
-            class="input taskNameError"
-            name="taskName"
-            size="30"
-            font="1.5rem"
-            required
-          />
+            <label for="taskName">Task Name: </label>
+            <input
+              type="text"
+              id="taskName"
+              class="input taskNameError"
+              name="taskName"
+              size="30"
+              font="1.5rem"
+              required
+            />
+          </div>
+
+          <div>
+            <p align="right" id="taskNameError" class="fieldError"></p>
+          </div>
         </div>
-        
-        <div>
-          <p align="right" id="taskNameError" class="fieldError"></p>
-        </div>
-      </div>
         <div class="flexSingleInput">
           <div>
             <label for="assignee">Assignee: </label>
             <select name="assignee" id="assignee">
               <option value="none" selected disabled hidden>
-                Select an Option
+                Select an Assignee
               </option>
               <option>Shibo</option>
               <option>Sarthak</option>
@@ -47,23 +47,11 @@
             <p align="right" id="assigneeError" class="fieldError"></p>
           </div>
         </div>
-        <!--input
-            type="dropdow"
-            id="assignee"
-            class="input assigneeError"
-            name="assignee"
-            size="15"
-            required
-        /-->
+
         <div class="flexSingleInput">
           <div>
             <label for="dueDate">Due Date: </label>
-            <input
-              type="date"
-              id="dueDate"
-              class="input"
-              name="dueDate"
-            />
+            <input type="date" id="dueDate" class="input" name="dueDate" />
           </div>
           <div>
             <p align="right" id="dueDateError" class="fieldError"></p>

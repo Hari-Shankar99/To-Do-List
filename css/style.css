@@ -7,30 +7,32 @@ h1 {
 .banner {
   background-color: rgba(234, 103, 70, 0.6);
 }
-.flexSingleInput{
+.flexSingleInput {
   display: flex;
   flex-direction: column;
 }
 
-.fieldError{
-  color : red;
+.fieldError {
+  color: red;
   font-size: 1rem;
   text-align: right;
 }
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   padding: 5px;
   color: red;
   opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: red;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
+::-ms-input-placeholder {
+  /* Microsoft Edge */
   color: red;
 }
-
 
 h2 {
   text-align: center;
@@ -43,18 +45,18 @@ h2 {
   justify-content: space-evenly;
   font-size: 1.5rem;
 }
-select{
+select {
   border-color: rgb(51, 105, 158);
   width: 200px;
   height: 25px;
   border-radius: 10px;
-  padding-left:10px;
+  padding-left: 10px;
 }
 .input {
   border-color: rgb(51, 105, 158);
   height: 25px;
   border-radius: 10px;
-  padding-left:10px;
+  padding-left: 10px;
 }
 table,
 th,
@@ -104,6 +106,6 @@ button:hover {
   }
 }
 
-.display-hidden{
+.display-hidden {
   visibility: hidden;
 }

@@ -1,4 +1,3 @@
-const assignees = ["none", "Hari", "Shibo", "Sarthak", "Prabjoth", "John Doe"];
 enum taskStatus {
   INPROGRESS,
   COMPLETED,
@@ -25,13 +24,16 @@ let tasks: taskType[] = []; //list of all tasks
 const listInProgress = document.getElementById(
   "tableInProgress"
 ) as HTMLTableElement;
+
 const listCompleted = document.getElementById(
   "tableCompleted"
 ) as HTMLTableElement;
+
 const form = document.getElementById("form") as HTMLFormElement;
 const button = document.getElementById("button") as HTMLButtonElement;
 const taskTable = document.getElementById("taskTable") as HTMLDivElement;
-let options = { weekday: 'short', month: 'short', day: 'numeric' };
+
+let dateOptions = { weekday: "short", month: "short", day: "numeric" };
 
 /* delete tasks with task id */
 function deleteTask(id: number) {
@@ -52,10 +54,11 @@ function toggleTask(id: number) {
 }
 
 function loadtask(id: number) {
-  //checking if it belongs to done or not done
+  //creating rows
   const row = document.createElement("tr");
-  row.setAttribute('id',`${id}`)
+  row.setAttribute("id", `${id}`);
   const colArray: HTMLTableCellElement[] = [];
+  //creating 4 columns
   for (let i = 0; i < 4; i++) {
     colArray[i] = document.createElement("td");
   }
@@ -66,35 +69,35 @@ function loadtask(id: number) {
 
   colArray[0].innerHTML = tasks[id].taskName;
   colArray[1].innerHTML = tasks[id].assignee;
-  colArray[2].innerHTML = tasks[id].dueDate.toLocaleDateString("en-US",options as Intl.DateTimeFormatOptions);
+  colArray[2].innerHTML = tasks[id].dueDate.toLocaleDateString(
+    "en-US",
+    dateOptions as Intl.DateTimeFormatOptions
+  );
 
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
   checkbox.setAttribute("job", "toggle");
   checkbox.setAttribute("id", `checkbox${id}`);
   let target: Element;
+  
+  //checking if it belongs to inProgress or Completed
   if (tasks[id].taskStatus === taskStatus.INPROGRESS) {
     checkbox.setAttribute("checked", "");
-    target = document.getElementById('tableCompleted');
-  }
-  else{
-    target = document.getElementById('tableInProgress');
+    target = document.getElementById("tableCompleted");
+  } else {
+    target = document.getElementById("tableInProgress");
   }
 
   colArray[3].appendChild(checkbox);
-  
+
   colArray.map((item) => {
     row.appendChild(item);
   });
+  //adding row
   target.appendChild(row);
 }
 
-// interface formDataType{
-//   taskName:string,
-//    assignee:assigneeList,
-//   dueDate:string
-// }
-
+//error when not a valid task form data
 enum errorType {
   taskNameError = "taskNameError",
   assigneeError = "assigneeError",
@@ -102,6 +105,8 @@ enum errorType {
   noDueDateError = "noDueDate",
 }
 
+
+//ADDING ERROR MESSAGE WHEN SOMETHING IS WRONG
 function addErrorMsg(error: errorType) {
   let element: Element;
   switch (error) {
@@ -125,8 +130,8 @@ function addErrorMsg(error: errorType) {
 }
 
 function removeErrorMsg() {
-  document.getElementById("taskNameError").innerHTML = '';
-  document.getElementById("assigneeError").innerHTML = '';
+  document.getElementById("taskNameError").innerHTML = "";
+  document.getElementById("assigneeError").innerHTML = "";
   document.getElementById("dueDateError").innerHTML = "";
 }
 
@@ -135,9 +140,10 @@ function validateTask(newTask: taskType): boolean {
   let todaysDate = new Date(); //getting the current date
   todaysDate.setHours(0, 0, 0, 0); //setting the time of this day to zero for comparision
   let validity: boolean = true;
+
   if (newTask.taskName.trim() == "") {
     //no task's name
-    console.log(newTask.taskName)
+    console.log(newTask.taskName);
     addErrorMsg(errorType.taskNameError);
     validity = false;
   }
@@ -150,8 +156,8 @@ function validateTask(newTask: taskType): boolean {
     // the date is in the past
     addErrorMsg(errorType.invalidDueDateError);
     validity = false;
-  }
-  else if(isNaN(+newTask.dueDate)){
+  } else if (isNaN(+newTask.dueDate)) {
+    //no date
     addErrorMsg(errorType.noDueDateError);
     validity = false;
   }
@@ -163,6 +169,8 @@ type formDataType = FormData & {
   dueDate: string;
 };
 
+
+//convert form data to task object
 function getTaskObj(formData: formDataType): taskType {
   let newTask: taskType = {
     taskId: tasks.length,
@@ -184,11 +192,13 @@ function submitTask() {
   if (validateTask(newTask)) {
     tasks.push(newTask);
     loadtask(newTask.taskId); //load the new task
+    //reset the input fields  
+    const form = document.getElementById("form") as HTMLFormElement;
+    form.reset();
   }
 
-  //reset the input fields
-  const form = document.getElementById("form")as HTMLFormElement;
-  form.reset();
+  
+  
 }
 
 // return key to submit task
@@ -199,9 +209,9 @@ document.addEventListener("keyup", function (event) {
 });
 
 function getJobValue(element: Element): string {
-  // return the clicked element inside list
+  // return the job value of the clicked element
 
-  type hasJob = NamedNodeMap & { job: {value: string} };
+  type hasJob = NamedNodeMap & { job: { value: string } };
   const attributesList = element.attributes as hasJob;
   return attributesList.job.value as string;
 }
@@ -221,7 +231,6 @@ taskTable.addEventListener("click", function (event) {
   const elementJob = getJobValue(element);
   //submit button is clicked
   if (elementJob === "toggle") {
-    //task is checked/unchecked
     type rowAttributes = Element & { id: string };
     const row = element?.parentNode?.parentNode as rowAttributes;
     let id: number = +row.id;
