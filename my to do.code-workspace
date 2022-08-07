@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../Downloads/d11_weekly-main"
+		},
+		{
+			"path": "../../../../Downloads/D11-Assignment_1-main"
+		},
+		{
+			"path": "../react"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "my to do"
+	}
+}

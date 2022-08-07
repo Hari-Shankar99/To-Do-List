@@ -12,58 +12,91 @@
       <br />
       <h1 font="arial">Tasks Window</h1>
       <br />
-      <div class="flex_form">
-        <label for="task_name"
-          >Task Name:
+      <form id="form" class="flex_form">
+        <div class="flexSingleInput">
+          <div>
+          <label for="taskName">Task Name: </label>
           <input
             type="text"
-            id="task_name"
-            class="input"
-            name="task_name"
+            id="taskName"
+            class="input taskNameError"
+            name="taskName"
             size="30"
             font="1.5rem"
-        /></label>
-
-        <label for="assignee"
-          >Assignee:
-          <input
-            type="text"
+            required
+          />
+        </div>
+        
+        <div>
+          <p align="right" id="taskNameError" class="fieldError"></p>
+        </div>
+      </div>
+        <div class="flexSingleInput">
+          <div>
+            <label for="assignee">Assignee: </label>
+            <select name="assignee" id="assignee">
+              <option value="none" selected disabled hidden>
+                Select an Option
+              </option>
+              <option>Shibo</option>
+              <option>Sarthak</option>
+              <option>Hari</option>
+            </select>
+          </div>
+          <div>
+            <p align="right" id="assigneeError" class="fieldError"></p>
+          </div>
+        </div>
+        <!--input
+            type="dropdow"
             id="assignee"
-            class="input"
+            class="input assigneeError"
             name="assignee"
             size="15"
-        /></label>
-
-        <label for="due_date"
-          >Due Date:
-          <input type="date" id="due_date" class="input" name="due_date"
-        /></label>
-      </div>
+            required
+        /-->
+        <div class="flexSingleInput">
+          <div>
+            <label for="dueDate">Due Date: </label>
+            <input
+              type="date"
+              id="dueDate"
+              class="input"
+              name="dueDate"
+            />
+          </div>
+          <div>
+            <p align="right" id="dueDateError" class="fieldError"></p>
+          </div>
+        </div>
+      </form>
       <br /><br /><br />
     </div>
     <br />
-    <button job="submit">Add Task</button>
-    <h2>In progress</h2>
-    <div>
-      <table id="table_inProgress">
-        <tr>
-          <th>Task Details</th>
-          <th>Assignee</th>
-          <th>Due Date</th>
-          <th>Action</th>
-        </tr>
-      </table>
-    </div>
-    <div>
-      <h2>Completed</h2>
-      <table id="table_Completed">
-        <tr>
-          <th>Task Details</th>
-          <th>Assignee</th>
-          <th>Due Date</th>
-          <th>Status</th>
-        </tr>
-      </table>
+    <button job="submit" id="button">Add Task</button>
+    <div id="taskTable">
+      <h2>In progress</h2>
+      <div>
+        <table id="tableInProgress">
+          <tr>
+            <th>Task Details</th>
+            <th>Assignee</th>
+            <th>Due Date</th>
+            <th>Action</th>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>Completed</h2>
+        <table id="tableCompleted">
+          <tr>
+            <th>Task Details</th>
+            <th>Assignee</th>
+            <th>Due Date</th>
+            <th>Status</th>
+          </tr>
+        </table>
+      </div>
     </div>
     <script src="js/main.js"></script>
   </body>
