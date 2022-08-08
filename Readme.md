@@ -1,3 +1,4 @@
+Live Preview: https://htmlpreview.github.io/?https://github.com/Hari-Shankar99/To-Do-List/blob/master/index.html
 This web app is used to manage the task assignment when worling in a team.
 
 The pages funtionality includes
