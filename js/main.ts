@@ -1,9 +1,9 @@
-enum taskStatus {
+enum TaskStatus {
   INPROGRESS,
   COMPLETED,
 }
 
-type assigneesName =
+type AssigneesName =
   | "none"
   | "Hari"
   | "Shibo"
@@ -11,15 +11,15 @@ type assigneesName =
   | "Prabjoth"
   | "John Doe";
 
-interface taskType {
+interface TaskType {
   taskId: number;
   taskName: string;
-  assignee: assigneesName;
+  assignee: AssigneesName;
   dueDate: Date;
-  taskStatus: taskStatus;
+  taskStatus: TaskStatus;
 }
 
-let tasks: taskType[] = []; //list of all tasks
+let tasks: TaskType[] = []; //list of all tasks
 
 const listInProgress = document.getElementById(
   "tableInProgress"
@@ -33,7 +33,11 @@ const form = document.getElementById("form") as HTMLFormElement;
 const button = document.getElementById("button") as HTMLButtonElement;
 const taskTable = document.getElementById("taskTable") as HTMLDivElement;
 
-let dateOptions = { weekday: "short", month: "short", day: "numeric" };
+const dateOptions = {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+} as Intl.DateTimeFormatOptions;
 
 /* delete tasks with task id */
 function deleteTask(id: number) {
@@ -43,12 +47,11 @@ function deleteTask(id: number) {
 
 /* toggles the status of the tasks */
 function toggleTask(id: number) {
-  if (tasks[id].taskStatus === taskStatus.COMPLETED) {
-    tasks[id].taskStatus = taskStatus.INPROGRESS;
-  } // changing the status
-  else {
-    tasks[id].taskStatus = taskStatus.COMPLETED;
-  } // changing the status
+  if (tasks[id].taskStatus === TaskStatus.COMPLETED) {
+    tasks[id].taskStatus = TaskStatus.INPROGRESS; // changing the status
+  } else {
+    tasks[id].taskStatus = TaskStatus.COMPLETED; // changing the status
+  }
   deleteTask(id); //deleting from 1st list
   loadtask(id); //adding to other list
 }
@@ -79,9 +82,9 @@ function loadtask(id: number) {
   checkbox.setAttribute("job", "toggle");
   checkbox.setAttribute("id", `checkbox${id}`);
   let target: Element;
-  
+
   //checking if it belongs to inProgress or Completed
-  if (tasks[id].taskStatus === taskStatus.INPROGRESS) {
+  if (tasks[id].taskStatus === TaskStatus.INPROGRESS) {
     checkbox.setAttribute("checked", "");
     target = document.getElementById("tableCompleted");
   } else {
@@ -98,16 +101,15 @@ function loadtask(id: number) {
 }
 
 //error when not a valid task form data
-enum errorType {
-  taskNameError = "taskNameError",
-  assigneeError = "assigneeError",
-  invalidDueDateError = "invalidDueDate",
-  noDueDateError = "noDueDate",
+enum ErrorType {
+  TASK_NAME_ERROR = "taskNameError",
+  ASSIGNEE_ERROR = "assigneeError",
+  INVALID_DUE_DATE_ERROR = "invalidDueDate",
+  NO_DUE_DATE_ERROR = "noDueDate",
 }
 
-
 //ADDING ERROR MESSAGE WHEN SOMETHING IS WRONG
-function addErrorMsg(error: errorType) {
+function addErrorMsg(error: ErrorType) {
   let element: Element;
   switch (error) {
     case "taskNameError":
@@ -135,7 +137,7 @@ function removeErrorMsg() {
   document.getElementById("dueDateError").innerHTML = "";
 }
 
-function validateTask(newTask: taskType): boolean {
+function validateTask(newTask: TaskType): boolean {
   removeErrorMsg();
   let todaysDate = new Date(); //getting the current date
   todaysDate.setHours(0, 0, 0, 0); //setting the time of this day to zero for comparision
@@ -144,40 +146,39 @@ function validateTask(newTask: taskType): boolean {
   if (newTask.taskName.trim() == "") {
     //no task's name
     console.log(newTask.taskName);
-    addErrorMsg(errorType.taskNameError);
+    addErrorMsg(ErrorType.TASK_NAME_ERROR);
     validity = false;
   }
   if (!newTask.assignee) {
     //no task's assignee
-    addErrorMsg(errorType.assigneeError);
+    addErrorMsg(ErrorType.ASSIGNEE_ERROR);
     validity = false;
   }
   if (newTask.dueDate < todaysDate) {
     // the date is in the past
-    addErrorMsg(errorType.invalidDueDateError);
+    addErrorMsg(ErrorType.INVALID_DUE_DATE_ERROR);
     validity = false;
   } else if (isNaN(+newTask.dueDate)) {
     //no date
-    addErrorMsg(errorType.noDueDateError);
+    addErrorMsg(ErrorType.NO_DUE_DATE_ERROR);
     validity = false;
   }
   return validity;
 }
 type formDataType = FormData & {
   taskName: string;
-  assignee: assigneesName;
+  assignee: AssigneesName;
   dueDate: string;
 };
 
-
 //convert form data to task object
-function getTaskObj(formData: formDataType): taskType {
-  let newTask: taskType = {
+function getTaskObj(formData: formDataType): TaskType {
+  let newTask: TaskType = {
     taskId: tasks.length,
     taskName: formData.get("taskName") as string,
-    assignee: formData.get("assignee") as assigneesName,
+    assignee: formData.get("assignee") as AssigneesName,
     dueDate: new Date(formData.get("dueDate") as string),
-    taskStatus: taskStatus.COMPLETED,
+    taskStatus: TaskStatus.COMPLETED,
   };
   return newTask;
 }
@@ -192,17 +193,14 @@ function submitTask() {
   if (validateTask(newTask)) {
     tasks.push(newTask);
     loadtask(newTask.taskId); //load the new task
-    //reset the input fields  
+    //reset the input fields
     const form = document.getElementById("form") as HTMLFormElement;
     form.reset();
   }
-
-  
-  
 }
 
 // return key to submit task
-document.addEventListener("keyup", function (event) {
+document.addEventListener("keyup", function (event: Event & {key:string}) {
   if (event.key === "Enter") {
     submitTask();
   }
@@ -217,7 +215,7 @@ function getJobValue(element: Element): string {
 }
 
 // Add task button clicked
-button.addEventListener("click", function (event) {
+button.addEventListener("click", function (event: Event) {
   const element = event.target as Element;
   const elementJob = getJobValue(element);
   if (elementJob === "submit") {
@@ -226,7 +224,7 @@ button.addEventListener("click", function (event) {
 });
 
 //click monitoring
-taskTable.addEventListener("click", function (event) {
+taskTable.addEventListener("click", function (event: Event) {
   const element = event.target as Element;
   const elementJob = getJobValue(element);
   //submit button is clicked

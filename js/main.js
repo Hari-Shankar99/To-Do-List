@@ -1,15 +1,19 @@
-var taskStatus;
-(function (taskStatus) {
-    taskStatus[taskStatus["INPROGRESS"] = 0] = "INPROGRESS";
-    taskStatus[taskStatus["COMPLETED"] = 1] = "COMPLETED";
-})(taskStatus || (taskStatus = {}));
+var TaskStatus;
+(function (TaskStatus) {
+    TaskStatus[TaskStatus["INPROGRESS"] = 0] = "INPROGRESS";
+    TaskStatus[TaskStatus["COMPLETED"] = 1] = "COMPLETED";
+})(TaskStatus || (TaskStatus = {}));
 var tasks = []; //list of all tasks
 var listInProgress = document.getElementById("tableInProgress");
 var listCompleted = document.getElementById("tableCompleted");
 var form = document.getElementById("form");
 var button = document.getElementById("button");
 var taskTable = document.getElementById("taskTable");
-var dateOptions = { weekday: "short", month: "short", day: "numeric" };
+var dateOptions = {
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+};
 /* delete tasks with task id */
 function deleteTask(id) {
     var row = document.getElementById("".concat(id));
@@ -17,12 +21,12 @@ function deleteTask(id) {
 }
 /* toggles the status of the tasks */
 function toggleTask(id) {
-    if (tasks[id].taskStatus === taskStatus.COMPLETED) {
-        tasks[id].taskStatus = taskStatus.INPROGRESS;
-    } // changing the status
+    if (tasks[id].taskStatus === TaskStatus.COMPLETED) {
+        tasks[id].taskStatus = TaskStatus.INPROGRESS; // changing the status
+    }
     else {
-        tasks[id].taskStatus = taskStatus.COMPLETED;
-    } // changing the status
+        tasks[id].taskStatus = TaskStatus.COMPLETED; // changing the status
+    }
     deleteTask(id); //deleting from 1st list
     loadtask(id); //adding to other list
 }
@@ -47,7 +51,7 @@ function loadtask(id) {
     checkbox.setAttribute("id", "checkbox".concat(id));
     var target;
     //checking if it belongs to inProgress or Completed
-    if (tasks[id].taskStatus === taskStatus.INPROGRESS) {
+    if (tasks[id].taskStatus === TaskStatus.INPROGRESS) {
         checkbox.setAttribute("checked", "");
         target = document.getElementById("tableCompleted");
     }
@@ -62,13 +66,13 @@ function loadtask(id) {
     target.appendChild(row);
 }
 //error when not a valid task form data
-var errorType;
-(function (errorType) {
-    errorType["taskNameError"] = "taskNameError";
-    errorType["assigneeError"] = "assigneeError";
-    errorType["invalidDueDateError"] = "invalidDueDate";
-    errorType["noDueDateError"] = "noDueDate";
-})(errorType || (errorType = {}));
+var ErrorType;
+(function (ErrorType) {
+    ErrorType["TASK_NAME_ERROR"] = "taskNameError";
+    ErrorType["ASSIGNEE_ERROR"] = "assigneeError";
+    ErrorType["INVALID_DUE_DATE_ERROR"] = "invalidDueDate";
+    ErrorType["NO_DUE_DATE_ERROR"] = "noDueDate";
+})(ErrorType || (ErrorType = {}));
 //ADDING ERROR MESSAGE WHEN SOMETHING IS WRONG
 function addErrorMsg(error) {
     var element;
@@ -104,22 +108,22 @@ function validateTask(newTask) {
     if (newTask.taskName.trim() == "") {
         //no task's name
         console.log(newTask.taskName);
-        addErrorMsg(errorType.taskNameError);
+        addErrorMsg(ErrorType.TASK_NAME_ERROR);
         validity = false;
     }
     if (!newTask.assignee) {
         //no task's assignee
-        addErrorMsg(errorType.assigneeError);
+        addErrorMsg(ErrorType.ASSIGNEE_ERROR);
         validity = false;
     }
     if (newTask.dueDate < todaysDate) {
         // the date is in the past
-        addErrorMsg(errorType.invalidDueDateError);
+        addErrorMsg(ErrorType.INVALID_DUE_DATE_ERROR);
         validity = false;
     }
     else if (isNaN(+newTask.dueDate)) {
         //no date
-        addErrorMsg(errorType.noDueDateError);
+        addErrorMsg(ErrorType.NO_DUE_DATE_ERROR);
         validity = false;
     }
     return validity;
@@ -131,7 +135,7 @@ function getTaskObj(formData) {
         taskName: formData.get("taskName"),
         assignee: formData.get("assignee"),
         dueDate: new Date(formData.get("dueDate")),
-        taskStatus: taskStatus.COMPLETED
+        taskStatus: TaskStatus.COMPLETED
     };
     return newTask;
 }
@@ -144,7 +148,7 @@ function submitTask() {
     if (validateTask(newTask)) {
         tasks.push(newTask);
         loadtask(newTask.taskId); //load the new task
-        //reset the input fields  
+        //reset the input fields
         var form_1 = document.getElementById("form");
         form_1.reset();
     }
